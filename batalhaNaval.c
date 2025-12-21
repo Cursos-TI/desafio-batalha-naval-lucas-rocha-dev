@@ -1,14 +1,50 @@
 #include <stdio.h>
 
 // Desafio Batalha Naval - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
-// Siga os comentários para implementar cada parte do desafio.
-
+// Nivel Novato concluído
 int main() {
-    // Nível Novato - Posicionamento dos Navios
-    // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
-    // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
-    // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
+    int tabuleiro[10][10] = {0};
+    char colunas[10] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
+    int navio1[3] = {3, 3, 3};
+    int navio2[3] = {3, 3, 3};
+
+
+    // Navio 1 - Horizontal na linha 3, coluna E
+    int linha_selecionada = 3;
+    int coluna_selecionada = 'E'; 
+    char coluna_selecionada_convertida = coluna_selecionada - 'A'; // Convertendo char para int
+
+    for(int i = 0; i < 3; i++) {
+        tabuleiro[linha_selecionada - 1][coluna_selecionada_convertida + i] = navio1[i];
+    }
+
+    // Navio 2 - Vertical na linha 6, coluna B
+    linha_selecionada = 6;
+    coluna_selecionada = 'B'; 
+    coluna_selecionada_convertida = coluna_selecionada - 'A'; // Convertendo char para int
+    for(int i = 0; i < 3; i++) {
+        tabuleiro[linha_selecionada - 1 + i][coluna_selecionada_convertida] = navio2[i];
+    }
+
+
+    // Exibição do tabuleiro
+    printf(" TABULEIRO BATALHA NAVAL \n");
+    printf(" ");
+    for (int i = 0; i < 10; i++) {
+        printf(" %c ", colunas[i]); // Exibindo as letras das colunas
+        
+    }
+    printf("\n");
+    for (int i = 0; i < 10; i++) {
+        printf("%d", i + 1); // Exibindo os números das linhas
+
+        for (int j = 0; j < 10; j++) {
+            printf(" %d ", tabuleiro[i][j]);
+        }
+
+        printf("\n");
+    }
+
 
     // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
     // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
