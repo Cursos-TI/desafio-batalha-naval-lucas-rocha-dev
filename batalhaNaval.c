@@ -3,41 +3,74 @@
 // Desafio Batalha Naval - MateCheck
 // Nivel Novato concluído
 int main() {
+    // Tabuleiro 10x10 inicializado com 0 (água)
     int tabuleiro[10][10] = {0};
+
+    // Letras para cabeçalho das colunas
     char colunas[10] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
+
+    // Definição dos navios (tamanho 3)
     int navio1[3] = {3, 3, 3};
     int navio2[3] = {3, 3, 3};
 
 
-    // Navio 1 - Horizontal na linha 3, coluna E
-    int linha_selecionada = 3;
-    int coluna_selecionada = 'E'; 
-    char coluna_selecionada_convertida = coluna_selecionada - 'A'; // Convertendo char para int
+    // ======================================
+    // Posicionamento do Navio 1 - Horizontal
+    // ======================================
+    int linha_h = 2;      // Linha 2 (índice 1 no array)
+    int coluna_inicial_h = 'C';   // Coluna inicial C
+    int coluna_convertida_h = coluna_inicial_h - 'A'; // Convertendo char para int
 
     for(int i = 0; i < 3; i++) {
-        tabuleiro[linha_selecionada - 1][coluna_selecionada_convertida + i] = navio1[i];
-    }
+        // Verifica limites do tabuleiro
+        if(coluna_convertida_h + i >= 10 || linha_h - 1 >= 10) {
+            printf("Erro: Navio 1 ultrapassa os limites do tabuleiro na posição (%d, %c)\n", linha_h, coluna_inicial_h + i);
+            return 1; // Sai do programa com erro
+        }
 
-    // Navio 2 - Vertical na linha 6, coluna B
-    linha_selecionada = 6;
-    coluna_selecionada = 'B'; 
-    coluna_selecionada_convertida = coluna_selecionada - 'A'; // Convertendo char para int
+        // Verifica sobreposição de navios
+        if(tabuleiro[linha_h - 1][coluna_convertida_h + i] != 0) {
+            printf("Erro: Sobreposição de navios na posição (%d, %c)\n", linha_h, coluna_inicial_h + i);
+            return 1; // Sai do programa com erro
+        }
+
+        tabuleiro[linha_h - 1][coluna_convertida_h + i] = navio1[i];
+    }
+    // ======================================
+    // Posicionamento do Navio 2 - Vertical
+    // ======================================
+    int linha_v = 6;     // Linha 6 (índice 5 no array)
+    char coluna_inicial_v = 'F'; // Coluna inicial F
+    int coluna_convertida_v = coluna_inicial_v - 'A'; // Convertendo char para int
+
     for(int i = 0; i < 3; i++) {
-        tabuleiro[linha_selecionada - 1 + i][coluna_selecionada_convertida] = navio2[i];
+        // Verifica limites do tabuleiro
+        if(linha_v - 1 + i >= 10 || coluna_convertida_v >= 10) {
+            printf("Erro: Navio 2 ultrapassa os limites do tabuleiro na posição (%d, %c)\n", linha_v, coluna_inicial_v + i);
+            return 1; // Sai do programa com erro
+        }
+
+        // Verifica sobreposição de navios
+        if(tabuleiro[linha_v - 1 + i][coluna_convertida_v] != 0) {
+            printf("Erro: Sobreposição de navios na posição (%d, %c)\n", linha_v + i, coluna_inicial_v);
+            return 1; // Sai do programa com erro
+        }
+        tabuleiro[linha_v - 1 + i][coluna_convertida_v] = navio2[i];
     }
 
 
+    // ===================================
     // Exibição do tabuleiro
+    // ===================================
     printf(" TABULEIRO BATALHA NAVAL \n");
-    printf(" ");
+    printf("  ");
     for (int i = 0; i < 10; i++) {
         printf(" %c ", colunas[i]); // Exibindo as letras das colunas
         
     }
     printf("\n");
     for (int i = 0; i < 10; i++) {
-        printf("%d", i + 1); // Exibindo os números das linhas
-
+        printf("%2d", i + 1); // Exibindo os números das linhas
         for (int j = 0; j < 10; j++) {
             printf(" %d ", tabuleiro[i][j]);
         }
