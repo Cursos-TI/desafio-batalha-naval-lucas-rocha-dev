@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 // Desafio Batalha Naval - MateCheck
-// Nivel Novato concluído
+// Nivel Aventureiro
 int main() {
     // Tabuleiro 10x10 inicializado com 0 (água)
     int tabuleiro[10][10] = {0};
@@ -18,7 +18,7 @@ int main() {
     // Posicionamento do Navio 1 - Horizontal
     // ======================================
     int linha_h = 2;      // Linha 2 (índice 1 no array)
-    int coluna_inicial_h = 'C';   // Coluna inicial C
+    char coluna_inicial_h = 'C';   // Coluna inicial C
     int coluna_convertida_h = coluna_inicial_h - 'A'; // Convertendo char para int
 
     for(int i = 0; i < 3; i++) {
@@ -58,6 +58,49 @@ int main() {
         tabuleiro[linha_v - 1 + i][coluna_convertida_v] = navio2[i];
     }
 
+    // ======================================
+    // Posicionamento do Navio 3 - Diagonal
+    // ======================================
+    int linha_d = 8;     // Linha 8 (índice 7 no array)
+    char coluna_inicial_d = 'B'; // Coluna inicial B
+    int coluna_convertida_d = coluna_inicial_d - 'A'; // Convertendo char para int
+
+    for(int i = 0; i < 3; i++) {
+        // Verifica limites do tabuleiro
+        if(linha_d - 1 + i >= 10 || coluna_convertida_d + i >= 10) {
+            printf("Erro: Navio 3 ultrapassa os limites do tabuleiro na posição (%d, %c)\n", linha_d, coluna_inicial_d + i);
+            return 1; // Sai do programa com erro
+        }
+
+        // Verifica sobreposição de navios
+        if(tabuleiro[linha_d - 1 + i][coluna_convertida_d + i] != 0) {
+            printf("Erro: Sobreposição de navios na posição (%d, %c)\n", linha_d + i, coluna_inicial_d + i);
+            return 1; // Sai do programa com erro
+        }
+        tabuleiro[linha_d - 1 + i][coluna_convertida_d + i] = navio2[i];
+    }
+
+    // ======================================
+    // Posicionamento do Navio 4 - Diagonal
+    // ======================================
+    int linha_d2 = 8;     // Linha 8 (índice 7 no array)
+    char coluna_inicial_d2 = 'H'; // Coluna inicial H
+    int coluna_convertida_d2 = coluna_inicial_d2 - 'A'; // Convertendo char para int
+
+    for(int i = 0; i < 3; i++) {
+        // Verifica limites do tabuleiro
+        if(linha_d2 - 1 + i >= 10 || coluna_convertida_d2 - i < 0) {
+            printf("Erro: Navio 4 ultrapassa os limites do tabuleiro na posição (%d, %c)\n", linha_d2, coluna_inicial_d2 - i);
+            return 1; // Sai do programa com erro
+        }
+
+        // Verifica sobreposição de navios
+        if(tabuleiro[linha_d2 - 1 + i][coluna_convertida_d2 - i] != 0) {
+            printf("Erro: Sobreposição de navios na posição (%d, %c)\n", linha_d2 + i, coluna_inicial_d2 - i);
+            return 1; // Sai do programa com erro
+        }
+        tabuleiro[linha_d2 - 1 + i][coluna_convertida_d2 - i] = navio2[i];
+    }
 
     // ===================================
     // Exibição do tabuleiro
@@ -79,10 +122,6 @@ int main() {
     }
 
 
-    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
-    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
-    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
-    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
 
     // Nível Mestre - Habilidades Especiais com Matrizes
     // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
