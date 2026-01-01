@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 // Desafio Batalha Naval - MateCheck
-// Nivel Aventureiro
+// Nivel MESTRE
 int main() {
     // Tabuleiro 10x10 inicializado com 0 (água)
     int tabuleiro[10][10] = {0};
@@ -12,7 +12,41 @@ int main() {
     // Definição dos navios (tamanho 3)
     int navio1[3] = {3, 3, 3};
     int navio2[3] = {3, 3, 3};
+    int navio3[3] = {3, 3, 3};
+    int navio4[3] = {3, 3, 3};
 
+    // Definição das Matrizes de Habilidade (5x5)
+    int cone[5][5] = {0};
+    int cruz[5][5] = {0};
+    int octaedro[5][5] = {0};
+
+
+    // Construção da Matriz em Cone (Triângulo expandindo para baixo)
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+            // j >= (centro - i) e j <= (centro + i)
+                if (j >= 2 - i && j <= 2 + i) {
+                cone[i][j] = 1;
+            }
+        }
+    }
+
+    // Construção da Matriz em Cruz
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            if (i == 2 || j == 2) cruz[i][j] = 1;
+        }
+    }
+
+    // Construção da Matriz em Octaedro (Losango)
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            // Soma das distâncias ao centro (2,2)
+            int dist_i = (i >= 2) ? i - 2 : 2 - i;
+            int dist_j = (j >= 2) ? j - 2 : 2 - j;
+            if (dist_i + dist_j <= 2) octaedro[i][j] = 1;
+        }
+    }
 
     // ======================================
     // Posicionamento do Navio 1 - Horizontal
@@ -77,7 +111,7 @@ int main() {
             printf("Erro: Sobreposição de navios na posição (%d, %c)\n", linha_d + i, coluna_inicial_d + i);
             return 1; // Sai do programa com erro
         }
-        tabuleiro[linha_d - 1 + i][coluna_convertida_d + i] = navio2[i];
+        tabuleiro[linha_d - 1 + i][coluna_convertida_d + i] = navio3[i];
     }
 
     // ======================================
@@ -99,8 +133,55 @@ int main() {
             printf("Erro: Sobreposição de navios na posição (%d, %c)\n", linha_d2 + i, coluna_inicial_d2 - i);
             return 1; // Sai do programa com erro
         }
-        tabuleiro[linha_d2 - 1 + i][coluna_convertida_d2 - i] = navio2[i];
+        tabuleiro[linha_d2 - 1 + i][coluna_convertida_d2 - i] = navio4[i];
     }
+
+
+    // ======================================
+    // Sobreposição das Habilidades no Tabuleiro
+    // ======================================
+    // Pontos de Origem (Centro da matriz 5x5 no tabuleiro 10x10)
+    int origemCone[2] = {2, 2};     // Topo superior esquerdo
+    int origemCruz[2] = {5, 2};     // Meio esquerda
+    int origemOcta[2] = {2, 7};     // Topo direita
+
+    // Função de sobreposição lógica (aplicada via loops)
+    // Para cada habilidade, percorremos a matriz 5x5 e somamos ao ponto de origem
+    
+    // Aplicando CONE
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            int destinoL = origemCone[0] + (i - 2); // Centraliza a matriz no ponto
+            int destinoC = origemCone[1] + (j - 2);
+            // Verifica limites e se a matriz de habilidade tem efeito (1)
+            if (destinoL >= 0 && destinoL < 10 && destinoC >= 0 && destinoC < 10) {
+                if (cone[i][j] == 1) tabuleiro[destinoL][destinoC] = 5;
+            }
+        }
+    }
+
+    // Aplicando CRUZ
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            int destinoL = origemCruz[0] + (i - 2);
+            int destinoC = origemCruz[1] + (j - 2);
+            if (destinoL >= 0 && destinoL < 10 && destinoC >= 0 && destinoC < 10) {
+                if (cruz[i][j] == 1) tabuleiro[destinoL][destinoC] = 5;
+            }
+        }
+    }
+
+    // Aplicando OCTAEDRO
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            int destinoL = origemOcta[0] + (i - 2);
+            int destinoC = origemOcta[1] + (j - 2);
+            if (destinoL >= 0 && destinoL < 10 && destinoC >= 0 && destinoC < 10) {
+                if (octaedro[i][j] == 1) tabuleiro[destinoL][destinoC] = 5;
+            }
+        }
+    }
+
 
     // ===================================
     // Exibição do tabuleiro
@@ -120,29 +201,6 @@ int main() {
 
         printf("\n");
     }
-
-
-
-    // Nível Mestre - Habilidades Especiais com Matrizes
-    // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
-    // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
-    // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
-
-    // Exemplos de exibição das habilidades:
-    // Exemplo para habilidade em cone:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 1 1 1 1 1
-    
-    // Exemplo para habilidade em octaedro:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 0 0 1 0 0
-
-    // Exemplo para habilidade em cruz:
-    // 0 0 1 0 0
-    // 1 1 1 1 1
-    // 0 0 1 0 0
 
     return 0;
 }
